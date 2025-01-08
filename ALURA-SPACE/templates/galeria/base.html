@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -14,6 +15,7 @@
 
 <body>
     {% block content %}{% endblock %}
+    {% include 'galeria/layouts/_footer.html' %}
 </body>
 
 </html>
