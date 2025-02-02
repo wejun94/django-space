@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from django.conf import settings
+from django.conf.urls.static import static #para a referencia +static em urlpatterns
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', include('galeria.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #isso indica para o django que ele precisa usar as referencias que colocamos em settings.py
