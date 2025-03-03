@@ -1,5 +1,8 @@
 from django.db import models
+
 from datetime import datetime
+
+from django.contrib.auth.models import User
 
 # classe que é igual a um model, pois ela representa uma tabela no banco de dados
 class Fotografia(models.Model):
@@ -22,6 +25,13 @@ class Fotografia(models.Model):
     foto = models.ImageField(upload_to="fotos/%Y/%m/%d/", blank=True) #para evitar conflitos de imagens, dentro da pasta de fotos tera outra pasta com o ano, mês e dia onde sera cadastradro os items 
     publicada = models.BooleanField(default=False)
     data_fotografia = models.DateTimeField(default=datetime.now, blank=False)
+    usuario = models.ForeignKey(#relacionando a fotografia com o usuario
+        to=User,
+        on_delete=models.SET_NULL,#se o usuario for deletado, não deletamos a fotografia
+        null=True,#não podemos deletar o usuario caso a fotografia exista
+        blank=False,
+        related_name="fotos",#esta relacionando a fotografia com o usuario
+    )
     
     
     def _str_(self):

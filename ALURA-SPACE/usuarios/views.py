@@ -43,9 +43,7 @@ def cadastro(request):
 
 
         if form.is_valid(): # Se os dados são válidos, cria um novo usuário e redireciona para a página de login.
-            if form["senha_1"].value() != form["senha_2"].value():
-                messages.error(request, "Senhas não coincidem")
-                return redirect ('cadastro')
+            
 
             nome=form['nome_cadastro'].value()
             email=form['email'].value()
