@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
 from apps.galeria.models import Fotografia
+from apps.galeria.forms import FotografiaForms
 
 from django.contrib import messages
 
@@ -31,3 +32,27 @@ def buscar(request):
             fotografias = fotografias.filter(nome__icontains=nome_a_buscar)
             
     return render (request, "galeria/buscar.html", {"cards": fotografias})
+
+def nova_imagem(request):
+    #somente as pessoas com credencias terão acesso
+    if not request.user.is_authenticated:
+        messages.error(request, "Você precisa estar logado para ver a galeria"  )
+        return redirect('login')
+    
+    #o usuario deve preencher o formulario, as informações serão salvas no banco de dados. se a requisição for igual a POST, sera instanciado um novo formulario e vamos passar as informações para dentro deste novo formulario.
+    form = FotografiaForms
+    if request.method == 'POST':
+        form = FotografiaForms(request.POST, request.FILES)
+        if form.is_valid(): #se o formulário for válido, ele será salvo. 
+            form.save()
+            messages.success(request, 'Nova fotografia cadastrada')
+            return  redirect('index')
+    
+    #para passar o formulario para a pagina de html nova imagem, devemos fazer a chamada aqui do formulario e depois chama-lo dentro do return entre os parenteses.
+    return render(request, 'galeria/nova_imagem.html', {'form':form})
+
+def editar_imagem(request):
+    pass
+
+def deletar_imagem(request):
+    pass
